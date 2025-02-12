@@ -1,28 +1,30 @@
-name: Enforce Jira ID in Commit Messages
-on: [push]  # Runs on every push and pull request
+name: Enforce Jira Story ID in Commit Messages
+
+on: 
+  push:
+   paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '.github/workflows/**'
 
 jobs:
   check-commits:
-   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-        
-      - name: Get commit messages1
-         run: |
+
+      - name: Validate commit messages
+        run: |
           JIRA_REGEX="([A-Z]+-[0-9]+)"
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          MESSAGE=$(git log -1 --pretty=format:'%s')
-
-          # Ignore commits made by GitHub Actions
-          if [[ "$AUTHOR" == "github-actions[bot]" ]]; then
-            echo "✅ Skipping commit by GitHub Actions"
-            exit 0
-          fi
-
-          # Check if the commit message contains a Jira ID
-          if ! echo "$MESSAGE" | grep -qE "$JIRA_REGEX"; then
-            echo "❌ ERROR: Commit message must include a Jira ID (e.g., ABC-123)"
+          INVALID_COMMITS=0
+          for commit in $(git log --format=%s -n 10 --no-merges); do
+            if ! echo "$commit" | grep -qE "$JIRA_REGEX"; then
+              echo "❌ ERROR: Commit '$commit' does not contain a Jira story ID!"
+              INVALID_COMMITS=$((INVALID_COMMITS+1))
+            fi
+          done
+          if [ $INVALID_COMMITS -gt 0 ]; then
             exit 1
           fi
