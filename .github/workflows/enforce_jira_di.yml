@@ -1,4 +1,4 @@
-name: Enforce Jira ID in Commit Messages from arslan ali
+name: Enforce Jira ID in Commit Messages
 on: [push, pull_request]  # Runs on every push and pull request
 
 jobs:
