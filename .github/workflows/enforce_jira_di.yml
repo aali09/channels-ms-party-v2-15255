@@ -13,6 +13,8 @@ jobs:
         run: |
           JIRA_REGEX="([A-Z]+-[0-9]+)"
           ERROR=0
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          MESSAGE=$(git log -1 --pretty=format:'%s')
           # Ignore commits made by GitHub Actions
           if [[ "$AUTHOR" == "github-actions[bot]" ]]; then
             echo "✅ Skipping commit by GitHub Actions"
@@ -28,4 +30,3 @@ jobs:
             echo "❌ Some commits are missing Jira IDs. Please follow commit format: 'ABC-123 Fix issue'"
             exit 1
           fi
-
