@@ -6,7 +6,7 @@ jobs:
   check-commit-messages:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Validate commit messages
@@ -20,13 +20,9 @@ jobs:
             echo "✅ Skipping commit by GitHub Actions"
            exit 0
           fi
-          for commit in $(git log --format=%s --no-merges -n 10); do
-            if ! echo "$commit" | grep -qE "$JIRA_REGEX"; then
-              echo "❌ ERROR: Commit '$commit' does not contain a Jira story ID!"
-              ERROR=1
-            fi
-          done
-          if [ $ERROR -eq 1 ]; then
-            echo "❌ Some commits are missing Jira IDs. Please follow commit format: 'ABC-123 Fix issue'"
-            exit 1
+
+          # Check if the commit message contains a Jira ID
+          if ! echo "$MESSAGE" | grep -qE "$JIRA_REGEX"; then
+           echo "❌ ERROR: Commit message must include a Jira ID (e.g., ABC-123)"
+           exit 1
           fi
