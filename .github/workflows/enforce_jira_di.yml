@@ -3,8 +3,8 @@ name: Enforce Jira Story ID in Commit Messages
 on: 
   push:
    paths-ignore:
-      - 'docs/**'
-      - '.github/workflows/**'
+     - 'docs/**'
+     - '.github/workflows/**'
 
       
 jobs:
