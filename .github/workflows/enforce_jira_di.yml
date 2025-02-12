@@ -6,10 +6,10 @@ jobs:
    runs-on: ubuntu-latest
 
     steps:
-     - name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
         
-     - name: Get commit messages1
+      - name: Get commit messages1
          run: |
           JIRA_REGEX="([A-Z]+-[0-9]+)"
           AUTHOR=$(git log -1 --pretty=format:'%an')
