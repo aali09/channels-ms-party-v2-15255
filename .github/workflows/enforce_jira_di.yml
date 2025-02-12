@@ -5,7 +5,6 @@ on:
    paths-ignore:
      - 'docs/**'
      - '.github/workflows/**'
-
 jobs:
   check-commits:
     runs-on: ubuntu-latest
