@@ -4,9 +4,7 @@ on:
   push:
    paths-ignore:
       - 'docs/**'
-      - '**/*.md'
       - '.github/workflows/**'
-
 jobs:
   check-commits:
     runs-on: ubuntu-latest
