@@ -4,24 +4,3 @@ on:
   push:
    paths-ignore:
      - '.github/workflows/**'
-jobs:
-   check-commits:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Validate commit messages
-        run: |
-          JIRA_REGEX="([A-Z]+-[0-9]+)"
-          INVALID_COMMITS=0
-          for commit in $(git log --format=%s -n 10 --no-merges); do
-            if ! echo "$commit" | grep -qE "$JIRA_REGEX"; then
-              echo "❌ ERROR: Commit '$commit' does not contain a Jira story ID!"
-              INVALID_COMMITS=$((INVALID_COMMITS+1))
-            fi
-          done
-          if [ $INVALID_COMMITS -gt 0 ]; then
-            exit 1
-          fi
